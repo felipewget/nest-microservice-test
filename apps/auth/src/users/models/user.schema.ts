@@ -4,22 +4,10 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 @Schema({ versionKey: false })
 export class UserDocument extends MongoAbstractDocument {
   @Prop()
-  timestamp: Date;
+  email: string;
 
   @Prop()
-  startDate: Date;
-
-  @Prop()
-  endDate: Date;
-
-  @Prop()
-  userId: string;
-
-  @Prop()
-  placeId: string;
-
-  @Prop()
-  invoiceId: string;
+  password: string;
 }
 
 export const UserSchema = SchemaFactory.createForClass(UserDocument);
