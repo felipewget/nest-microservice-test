@@ -3,9 +3,35 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { UsersModule } from './users/users.module';
 import { LoggerModule } from '@app/common';
+import { JwtModule } from '@nestjs/jwt';
+import {
+  ConfigModule as NestConfigModule,
+  ConfigService,
+} from '@nestjs/config';
+import * as Joi from 'joi';
 
 @Module({
-  imports: [UsersModule, LoggerModule],
+  imports: [
+    UsersModule,
+    LoggerModule,
+    NestConfigModule.forRoot({
+      isGlobal: true,
+      validationSchema: Joi.object({
+        MONGODB_URI: Joi.string().required(),
+        JWT_SECRET: Joi.string().required(),
+        JWT_EXPIRATION: Joi.string().required(),
+      }),
+    }),
+    JwtModule.registerAsync({
+      useFactory: (configurationService: ConfigService) => ({
+        secret: configurationService.get<string>('JWT_SECRET'),
+        signOptions: {
+          expiresIn: `${configurationService.get('JWT_EXPIRATION')}`,
+        },
+      }),
+      inject: [ConfigService],
+    }),
+  ],
   controllers: [AuthController],
   providers: [AuthService],
 })
