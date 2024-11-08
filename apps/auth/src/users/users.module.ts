@@ -4,6 +4,7 @@ import { UsersService } from './users.service';
 import { MongoModule } from '@app/common/database/mongo/mongo.module';
 import { UserDocument, UserSchema } from './models/user.schema';
 import { UserRepository } from './users.repository';
+import { JwtStrategy } from '../strategies/jwt.strategy';
 
 @Module({
   imports: [
@@ -11,7 +12,7 @@ import { UserRepository } from './users.repository';
     MongoModule.forFeature([{ name: UserDocument.name, schema: UserSchema }]),
   ],
   controllers: [UsersController],
-  providers: [UsersService, UserRepository],
+  providers: [UsersService, UserRepository, JwtStrategy],
   exports: [UsersService],
 })
 export class UsersModule {}
