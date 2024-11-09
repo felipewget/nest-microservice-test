@@ -1,5 +1,17 @@
 import { Type } from 'class-transformer';
-import { IsDate, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsDate,
+  IsDefined,
+  IsNotEmpty,
+  IsNotEmptyObject,
+  IsNumber,
+  IsString,
+  ValidateNested,
+  isDefined,
+} from 'class-validator';
+import Stripe from 'stripe';
+import { CardDto } from '../../../../libs/common/src/dto/card.dto';
+import { CreateChargeDto } from '@app/common/dto/create-charge.dto';
 
 export class CreateReservationDto {
   @IsDate()
@@ -10,11 +22,8 @@ export class CreateReservationDto {
   @Type(() => Date)
   endDate: Date;
 
-  @IsString()
-  @IsNotEmpty()
-  placeId: string;
-
-  @IsString()
-  @IsNotEmpty()
-  invoiceId: string;
+  @IsDefined()
+  @IsNotEmptyObject()
+  @ValidateNested()
+  charge: CreateChargeDto;
 }

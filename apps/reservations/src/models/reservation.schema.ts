@@ -16,9 +16,6 @@ export class ReservationDocument extends MongoAbstractDocument {
   userId: string;
 
   @Prop()
-  placeId: string;
-
-  @Prop()
   invoiceId: string;
 }
 
