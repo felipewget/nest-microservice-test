@@ -3,10 +3,7 @@ import { ReservationsService } from './reservations.service';
 import { ReservationsController } from './reservations.controller';
 import { LoggerModule, MongoModule } from '@app/common';
 import { ReservationRepository } from './reservations.repository';
-import {
-  ReservationDocument,
-  ReservationSchema,
-} from './models/reservation.schema';
+import { Reservation } from './models/reservation.entity';
 import {
   ConfigService,
   ConfigModule as NestConfigModule,
@@ -14,13 +11,12 @@ import {
 import * as Joi from 'joi';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { AUTH_SERVICE, PAYMENTS_SERVICE } from '@app/common/constants/services';
+import { MysqlModule } from '@app/common/database/mysql/mysql.module';
 
 @Module({
   imports: [
-    MongoModule,
-    MongoModule.forFeature([
-      { name: ReservationDocument.name, schema: ReservationSchema },
-    ]),
+    MysqlModule,
+    MysqlModule.forFeature([Reservation]),
     LoggerModule,
     NestConfigModule.forRoot({
       isGlobal: true,
